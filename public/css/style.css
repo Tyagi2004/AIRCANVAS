@@ -1,0 +1,212 @@
+:root {
+  --bg-0: #07070a;
+  --bg-1: #0d0f16;
+  --amber: #ffb454;
+  --cyan: #4fd1ff;
+  --rose: #ff5d7a;
+  --text-dim: rgba(255,255,255,0.6);
+  --text-faint: rgba(255,255,255,0.4);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  background: radial-gradient(120% 120% at 50% -10%, #1a1d2b 0%, var(--bg-0) 55%, #050507 100%);
+  color: #f4f1ea;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.film-grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 50;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.vignette {
+  position: fixed; inset: 0; pointer-events: none; z-index: 40;
+  background: radial-gradient(120% 90% at 50% 50%, transparent 40%, rgba(0,0,0,0.65) 100%);
+}
+
+/* ---------- NAV / BRAND ---------- */
+.navbar, .studio-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 28px 48px;
+}
+
+.brand {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px; letter-spacing: 2px; color: #fff;
+}
+.brand span { color: var(--amber); }
+.brand.small { font-size: 22px; text-decoration: none; }
+
+/* ---------- HERO ---------- */
+.hero {
+  min-height: 78vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 0 24px; position: relative; z-index: 5;
+}
+
+.kicker {
+  letter-spacing: 4px; font-size: 12px; color: var(--text-faint);
+  text-transform: uppercase; margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 8vw, 88px);
+  line-height: 1.05; margin: 0 0 22px; letter-spacing: 1px;
+}
+
+.glow { color: var(--cyan); text-shadow: 0 0 24px rgba(79,209,255,0.55), 0 0 60px rgba(79,209,255,0.25); }
+.glow-amber { color: var(--amber); text-shadow: 0 0 24px rgba(255,180,84,0.55), 0 0 60px rgba(255,180,84,0.25); }
+
+.subtitle {
+  max-width: 560px; color: var(--text-dim); font-size: 17px; line-height: 1.6;
+  margin-bottom: 38px; font-weight: 300;
+}
+
+.cta-button {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, #ffb454, #ff7a59);
+  color: #15110a; font-weight: 800; text-decoration: none;
+  padding: 16px 30px; border-radius: 100px; font-size: 15px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 10px 40px rgba(255,140,80,0.35);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.cta-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 50px rgba(255,140,80,0.5); }
+
+.hint { margin-top: 18px; font-size: 12px; color: var(--text-faint); letter-spacing: 0.3px; }
+
+.footer {
+  text-align: center; color: var(--text-faint); font-size: 12px; padding: 30px 0 40px;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- STUDIO ---------- */
+.studio-header { padding: 22px 36px; }
+
+.status {
+  display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim);
+  background: rgba(255,255,255,0.04); padding: 8px 16px; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 10px var(--rose); }
+.status.ready .dot { background: #37e08a; box-shadow: 0 0 10px #37e08a; }
+
+.studio-main {
+  display: grid; grid-template-columns: 1fr 320px; gap: 28px;
+  padding: 10px 36px 36px; max-width: 1400px; margin: 0 auto;
+}
+
+.stage { position: relative; }
+.stage-frame {
+  position: relative; border-radius: 22px; overflow: hidden;
+  background: #000; aspect-ratio: 4/3;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 30px 80px rgba(0,0,0,0.6);
+  touch-action: none; /* stop the browser hijacking pinch/scroll gestures over the camera view */
+}
+.stage-frame video, .stage-frame canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+/* The camera feed is only visually mirrored while the FRONT camera is
+   active (toggled via JS as `.mirrored`). A rear camera should display
+   normally, not mirrored. The canvas is drawn already-flipped in JS
+   (see toPx + isMirrored in aircanvas.js) and must never get a CSS
+   mirror itself, or text/strokes would double-flip. */
+.stage-frame video.mirrored {
+  transform: scaleX(-1);
+}
+.stage-glow {
+  position: absolute; inset: 0; pointer-events: none; border-radius: 22px;
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
+}
+
+.palette-panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; padding: 26px; backdrop-filter: blur(10px);
+  height: fit-content;
+}
+.palette-panel h2 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 1px; margin: 0 0 8px; font-size: 22px; }
+.palette-hint { font-size: 12.5px; color: var(--text-faint); line-height: 1.5; margin-bottom: 20px; }
+
+.swatches { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.swatch {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03); color: #fff; font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: all 0.2s ease; text-align: left;
+}
+.swatch::before {
+  content: ''; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--c, #888); box-shadow: 0 0 10px var(--c, transparent);
+}
+.swatch.clear::before { display: none; }
+.swatch:hover { background: rgba(255,255,255,0.07); transform: translateX(3px); }
+.swatch.active { border-color: var(--c, #ffb454); background: rgba(255,255,255,0.08); }
+
+.controls { display: flex; gap: 10px; margin-bottom: 24px; }
+.ghost-btn {
+  flex: 1; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: #fff; font-size: 13px; cursor: pointer; font-weight: 600;
+  transition: all 0.2s ease;
+}
+.ghost-btn:hover { background: rgba(255,255,255,0.08); }
+.flip-btn {
+  border-color: rgba(79,209,255,0.35); color: var(--cyan);
+}
+.flip-btn:hover { background: rgba(79,209,255,0.1); }
+
+.legend h3 { font-size: 14px; margin: 0 0 10px; color: var(--text-dim); }
+.legend ul { margin: 0; padding-left: 18px; color: var(--text-faint); font-size: 12.5px; line-height: 1.7; }
+
+@media (max-width: 900px) {
+  .studio-main { grid-template-columns: 1fr; }
+}
+
+/* ===================== Mobile-specific refinements ===================== */
+@media (max-width: 640px) {
+  .navbar, .studio-header { padding: 16px 18px; }
+  .brand { font-size: 22px; }
+  .brand.small { font-size: 18px; }
+
+  .hero { min-height: 70vh; padding: 0 18px; }
+  .hero h1 { font-size: clamp(34px, 11vw, 54px); }
+  .subtitle { font-size: 15px; }
+  .cta-button { padding: 14px 24px; font-size: 14px; width: 100%; justify-content: center; }
+
+  .studio-main { padding: 8px 14px 24px; gap: 16px; }
+
+  /* On a phone, gesturing usually happens in portrait orientation, so
+     give the camera stage a taller aspect ratio instead of widescreen. */
+  .stage-frame { aspect-ratio: 3/4; border-radius: 16px; }
+
+  .palette-panel { padding: 18px; border-radius: 16px; }
+  .palette-panel h2 { font-size: 19px; }
+  .palette-hint { font-size: 12px; }
+
+  /* Bigger tap targets — 44px is the standard minimum comfortable
+     touch-target size (Apple/Google accessibility guidelines). */
+  .swatch { padding: 14px 16px; font-size: 15px; min-height: 48px; }
+  .ghost-btn { padding: 14px; font-size: 13.5px; min-height: 46px; }
+
+  .controls { flex-wrap: wrap; }
+  .controls .ghost-btn { flex: 1 1 100%; }
+
+  .status { font-size: 12px; padding: 6px 12px; }
+}
+
+/* Landscape phones: stage and panel can sit side by side again, but the
+   stage should be wider since portrait-aspect would waste space. */
+@media (max-width: 900px) and (orientation: landscape) {
+  .studio-main { grid-template-columns: 1.4fr 1fr; }
+  .stage-frame { aspect-ratio: 4/3; }
+}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#07070a" />
+  <title>AirCanvas — Studio</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="studio-body">
+  <div class="film-grain"></div>
+
+  <header class="studio-header">
+    <a href="/" class="brand small">AIR<span>CANVAS</span></a>
+    <div class="status" id="statusPill">
+      <span class="dot"></span> <span id="statusText">Initializing camera…</span>
+    </div>
+  </header>
+
+  <main class="studio-main">
+    <section class="stage">
+      <div class="stage-frame">
+        <video id="webcam" autoplay playsinline muted></video>
+        <canvas id="overlay"></canvas>
+        <div class="stage-glow"></div>
+      </div>
+    </section>
+
+    <aside class="palette-panel">
+      <h2>Palette</h2>
+      <p class="palette-hint">Index finger only (middle curled) = <b>pen down, drawing</b>. Raise your middle finger too ("peace sign") = <b>pen up, move freely</b>. Hover the toolbar above the video to pick a color.</p>
+
+      <div class="swatches">
+        <button class="swatch clear" data-color="clear">
+          <span class="swatch-icon">✕</span> Clear
+        </button>
+        <button class="swatch active" data-color="blue" style="--c:#3aa0ff;">Blue</button>
+        <button class="swatch" data-color="green" style="--c:#37e08a;">Green</button>
+        <button class="swatch" data-color="red" style="--c:#ff4d5e;">Red</button>
+        <button class="swatch" data-color="yellow" style="--c:#ffd23a;">Yellow</button>
+      </div>
+
+      <div class="controls">
+        <button id="downloadBtn" class="ghost-btn">Save Artwork</button>
+        <button id="resetBtn" class="ghost-btn">Reset Canvas</button>
+        <button id="flipCameraBtn" class="ghost-btn flip-btn" title="Switch front/back camera">⟲ Flip Camera</button>
+      </div>
+
+      <div class="legend">
+        <h3>How it works</h3>
+        <ul>
+          <li>Point your index finger to draw mid-air.</li>
+          <li>Hover over a swatch to switch colors.</li>
+          <li>Pinch thumb to index to break a stroke (new segment).</li>
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- MediaPipe Hands (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+  <script src="/js/aircanvas.js"></script>
+</body>
+</html>
