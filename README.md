@@ -5,23 +5,6 @@ A browser-based hand-gesture drawing app, ported from your Python
 (OpenCV + MediaPipe) Air Canvas script into an Express + EJS website
 with a cinematic dark UI.
 
-## Why it's not literally your Python script running on a server
-
-A Node/Express server can't open the *user's* webcam — `cv2.VideoCapture(0)`
-only works on the machine the script runs on (so it would only ever access
-*your* server's camera, not the visitor's). The right way to make this work
-as a website is to move the camera + hand-tracking logic into the **browser**,
-using JavaScript, and serve the page with Express/EJS. So:
-
-- **Express + EJS** → serves the landing page and the canvas page (this is
-  the "website" part you asked for).
-- **MediaPipe Hands (JS/WASM build)** → the in-browser equivalent of
-  `mediapipe.solutions.hands` from your Python code. Same model, same
-  21 hand landmarks, just running client-side via WebAssembly.
-- **HTML5 `<canvas>` + `getUserMedia`** → replaces `cv2.imshow` and
-  `cv2.VideoCapture`. The drawing/painting logic (deques of points, color
-  selection, toolbar zones, clear button) is reimplemented 1:1 in
-  `public/js/aircanvas.js`.
 
 ## Features
 
