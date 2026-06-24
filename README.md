@@ -1,3 +1,4 @@
+
 # AirCanvas — Web Edition
 
 A browser-based hand-gesture drawing app, ported from your Python
@@ -144,3 +145,6 @@ an OpenCV window to a browser `<canvas>`.
   `--c` CSS variables on the swatch buttons in `views/canvas.ejs`.
 - **Gesture sensitivity**: tweak `PINCH_THRESHOLD` in `aircanvas.js`.
 - **Theme**: all visual styling lives in `public/css/style.css`.
+# AIRCANVAS
+AIR Canvas is a computer vision-based application that allows users to draw and write in the air without touching a physical surface
+ 54503d0c6460d135e58391b42cfb2e52662e1bd8
